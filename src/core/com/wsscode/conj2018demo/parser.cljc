@@ -31,7 +31,7 @@
 
 (comment
   (entity-parse {:first-name "Wilker" :last-name "Silva"}
-    [:full-name]))
+    []))
 ;endregion
 
 ;region 2
@@ -50,11 +50,16 @@
 
 (comment
   (entity-parse {:email "elaina.lind@gmail.com"}
-    [:full-name]))
+    []))
 
 (comment
   (pc/compute-paths (::pc/index-oir @indexes) #{:email} #{}
     :full-name))
+
+(comment
+  (entity-parse {}
+    [{[:email "elaina.lind@gmail.com"]
+      [:first-name]}]))
 ;endregion
 
 ;region 3
@@ -65,11 +70,6 @@
 
 (comment
   (entity-parse {} [:all-emails]))
-
-(comment
-  (entity-parse {}
-    [{[:email "elaina.lind@gmail.com"]
-      [:first-name]}]))
 ;endregion
 
 ;region 4
@@ -78,7 +78,7 @@
   {:answer-of-everything 42})
 
 (comment
-  (entity-parse {} [{:all-emails [:email :answer-of-everything]}]))
+  (entity-parse {} [:answer-of-everything]))
 ;endregion
 
 ;region 5
@@ -102,29 +102,22 @@
 
 (pc/defresolver host [_ {:host/keys [domain]}]
   {::pc/input  #{:host/domain}
-   ::pc/output [:host/domain
-                :host/name]}
-  (get host-by-domain domain))
+   ::pc/output [{:host
+                 [:host/domain
+                  :host/name]}]}
+  {:host (get host-by-domain domain)})
 
 (comment
   (entity-parse {:email "elaina.lind@gmail.com"}
-    [:email
-     {:>/ccascascas
-      [:email
-       :host/domain
-       :host/name]}
-     {:>/gfdsgsd
-      [:email
-       :host/domain
-       :host/name]}]))
+    [:email]))
 ;endregion
 
 ;region parser
 (def app-registry
   [full-name-resolver email->name all-emails the-answer
    email->domain host
-   (pc/alias-resolver :spacex.launch.links/video-link :youtube.video/url)
-   (pc/alias-resolver :conj-pathom.favorite-launch/flight-number :spacex.launch/flight-number)
+   #_ (pc/alias-resolver :spacex.launch.links/video-link :youtube.video/url)
+   #_ (pc/alias-resolver :conj-pathom.favorite-launch/flight-number :spacex.launch/flight-number)
    ])
 
 (def indexes (atom @gql-indexes))
@@ -140,8 +133,8 @@
                   ::p.http/driver          http-driver}
      ::p/plugins [(pc/connect-plugin {::pc/register app-registry
                                       ::pc/indexes  indexes})
-                  (youtube/youtube-plugin)
-                  (spacex/spacex-plugin)
+                  #_ (youtube/youtube-plugin)
+                  #_ (spacex/spacex-plugin)
                   p/error-handler-plugin
                   p/trace-plugin]}))
 ;endregion
