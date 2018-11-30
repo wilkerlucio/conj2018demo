@@ -157,14 +157,3 @@
    (defn entity-parse [entity query]
      (<!! (parser {::p/entity (atom entity)} query))))
 ;endregion
-
-(comment
-  [{:spacex/past-launches
-    [:spacex.launch/flight-number]}
-   {:spacex/latest-launch
-    [:youtube.video.snippet/title
-     :youtube.video/id
-     {:youtube.video/related
-      [:youtube.video.snippet/title]}
-     {:youtube.channel/latest-videos
-      [:youtube.video.snippet/title]}]}])
