@@ -64,11 +64,6 @@
 (comment
   (pc/compute-paths (::pc/index-oir @indexes) #{:email} #{}
     :full-name))
-
-(comment
-  (entity-parse {}
-    [{[:email "elaina.lind@gmail.com"]
-      [:first-name]}]))
 ;endregion
 
 ;region 3
@@ -79,6 +74,11 @@
 
 (comment
   (entity-parse {} [:all-emails]))
+
+(comment
+  (entity-parse {}
+    [{[:email "elaina.lind@gmail.com"]
+      [:full-name]}]))
 ;endregion
 
 ;region 4
