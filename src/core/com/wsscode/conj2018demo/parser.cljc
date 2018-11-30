@@ -87,7 +87,8 @@
   {:answer-of-everything 42})
 
 (comment
-  (entity-parse {} [:answer-of-everything]))
+  (entity-parse {}
+    [{:all-emails [:email :answer-of-everything]}]))
 ;endregion
 
 ;region 5
@@ -118,7 +119,11 @@
 
 (comment
   (entity-parse {:email "elaina.lind@gmail.com"}
-    [:email]))
+    [:host]))
+
+(comment
+  (entity-parse {:email "elaina.lind@gmail.com"}
+    [{??? [:email]}]))
 ;endregion
 
 ;region parser
