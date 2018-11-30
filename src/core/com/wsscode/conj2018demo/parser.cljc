@@ -76,9 +76,9 @@
   (entity-parse {} [:all-emails]))
 
 (comment
+  ; ident joins
   (entity-parse {}
-    [{[:email "elaina.lind@gmail.com"]
-      [:full-name]}]))
+    []))
 ;endregion
 
 ;region 4
