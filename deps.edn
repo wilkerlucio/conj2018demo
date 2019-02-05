@@ -2,11 +2,12 @@
  ["src/core" "src/cards" "test"]
 
  :deps
- {com.wsscode/pathom-viz             {:mvn/version "1.0.3"}
-  com.wsscode/pathom                 {:mvn/version "2.2.0-RC4"}
+ {com.wsscode/pathom-viz             {:mvn/version "1.0.4"}
+  com.wsscode/pathom                 {:mvn/version "2.2.9"}
   com.wsscode.pathom.connect/youtube {:local/root "/Users/wilker.lucio/Development/pathom-connect-youtube"}
   com.wsscode.pathom.connect/spacex  {:local/root "/Users/wilker.lucio/Development/pathom-connect-spacex"}
   clj-http                           {:mvn/version "3.8.0"}
+  cheshire                           {:mvn/version "5.8.0"}
   org.clojure/core.async             {:mvn/version "0.4.474"}
   org.clojure/test.check             {:mvn/version "0.10.0-alpha3"}}
 
@@ -21,6 +22,6 @@
                        :sha     "865416c2cec019cee92d8d3892d20a64559a4054"}}}
 
   :dev
-  {:extra-deps {nubank/workspaces          {:mvn/version "1.0.0-preview9"}
-                fulcrologic/fulcro-inspect {:mvn/version "2.2.3"}
+  {:extra-deps {nubank/workspaces          {:mvn/version "1.0.0"}
+                fulcrologic/fulcro-inspect {:mvn/version "2.2.4"}
                 binaryage/devtools         {:mvn/version "0.9.10"}}}}}
