@@ -31,7 +31,7 @@
 
 (comment
   (entity-parse {:first-name "Wilker" :last-name "Silva"}
-    []))
+    [:full-name]))
 ;endregion
 
 ;region 2
@@ -59,7 +59,7 @@
 
 (comment
   (entity-parse {:email "elaina.lind@gmail.com"}
-    []))
+    [:full-name]))
 
 (comment
   (pc/compute-paths (::pc/index-oir @indexes) #{:email} #{}
@@ -73,12 +73,13 @@
   {:all-emails (->> email-db keys (mapv #(hash-map :email %)))})
 
 (comment
-  (entity-parse {} [:all-emails]))
+  (entity-parse {} [{:all-emails [:full-name]}]))
 
 (comment
   ; ident joins
   (entity-parse {}
-    []))
+    [{[:email "elaina.lind@gmail.com"]
+      [:full-name]}]))
 ;endregion
 
 ;region 4
@@ -112,26 +113,27 @@
 
 (pc/defresolver host [_ {:host/keys [domain]}]
   {::pc/input  #{:host/domain}
-   ::pc/output [{:host
-                 [:host/domain
-                  :host/name]}]}
-  {:host (get host-by-domain domain)})
+   ::pc/output [:host/domain
+                :host/name]}
+  (get host-by-domain domain))
 
 (comment
   (entity-parse {:email "elaina.lind@gmail.com"}
-    [:host]))
+    [:host/name]))
 
 (comment
   (entity-parse {:email "elaina.lind@gmail.com"}
-    [{??? [:email]}]))
+    [:email
+     {:>/cascas [:host/domain :host/name]
+      }]))
 ;endregion
 
 ;region parser
 (def app-registry
   [full-name-resolver email->name all-emails the-answer
    email->domain host
-   #_ (pc/alias-resolver :spacex.launch.links/video-link :youtube.video/url)
-   #_ (pc/alias-resolver :conj-pathom.favorite-launch/flight-number :spacex.launch/flight-number)
+   (pc/alias-resolver :spacex.launch.links/video-link :youtube.video/url)
+   (pc/alias-resolver :conj-pathom.favorite-launch/flight-number :spacex.launch/flight-number)
    ])
 
 (def indexes (atom @gql-indexes))
@@ -147,8 +149,8 @@
                   ::p.http/driver          http-driver}
      ::p/plugins [(pc/connect-plugin {::pc/register app-registry
                                       ::pc/indexes  indexes})
-                  #_ (youtube/youtube-plugin)
-                  #_ (spacex/spacex-plugin)
+                  (youtube/youtube-plugin)
+                  (spacex/spacex-plugin)
                   p/error-handler-plugin
                   p/trace-plugin]}))
 ;endregion
